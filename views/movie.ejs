@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= movie.title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<header>
+    <h1>🎬 <span>Cinematic</span></h1>
+    <form action="/search" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Search Movies..." required>
+        <button type="submit">Search</button>
+    </form>
+</header>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/popular">Popular</a>
+    <a href="/top-rated">Top Rated</a>
+    <a href="/upcoming">Upcoming</a>
+    <a href="/categories">Categories</a>
+</nav>
+
+<main>
+    <!-- Movie Details -->
+    <div class="movie-details-wrapper">
+        <section class="movie-details">
+            <div class="poster-3d-wrapper">
+                <div class="poster">
+                    <% if(movie.poster_path){ %>
+                        <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+                    <% } else { %>
+                        <img src="https://via.placeholder.com/500x750?text=No+Image" alt="No Image">
+                    <% } %>
+                </div>
+            </div>
+            
+            <div class="details">
+                <h2><%= movie.title %></h2>
+                
+                <div class="meta-tags">
+                    <span class="meta-tag tag-highlight">⭐ <%= movie.vote_average.toFixed(1) %>/10</span>
+                    <span class="meta-tag">📅 <%= movie.release_date %></span>
+                    <!-- <span class="meta-tag">⏳ <%= movie.runtime %> min</span> -->
+                    <span class="meta-tag">🌍 <%= movie.original_language.toUpperCase() %></span>
+                </div>
+                
+                <div class="meta-tags">
+                    <% movie.genres.forEach(function(genre){ %>
+                        <span class="meta-tag"><%= genre.name %></span>
+                    <% }) %>
+                </div>
+
+                <!-- <p>💰 <strong>Budget:</strong> $<%= movie.budget.toLocaleString() %></p>
+                <p>💵 <strong>Revenue:</strong> $<%= movie.revenue.toLocaleString() %></p> -->
+
+                <h3>Overview</h3>
+                <p class="overview"><%= movie.overview %></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Trailer -->
+    <% if(trailer){ %>
+    <section class="trailer-section">
+        <h2>🎥 Official Trailer</h2>
+        <iframe
+            src="https://www.youtube.com/embed/<%= trailer.key %>"
+            title="Trailer"
+            frameborder="0"
+            allowfullscreen>
+        </iframe>
+    </section>
+    <% } %>
+
+    <!-- Cast -->
+    <section>
+        <h2>🎭 Cast</h2>
+        <div class="movie-container cast-container">
+            <% cast.forEach(actor => { %>
+                <div class="movie-card cast-card">
+                    <div class="movie-card-inner">
+                        <div class="movie-card-poster">
+                            <% if(actor.profile_path){ %>
+                                <img src="https://image.tmdb.org/t/p/w300<%= actor.profile_path %>" alt="<%= actor.name %>">
+                            <% } else { %>
+                                <img src="https://via.placeholder.com/300x450?text=No+Photo" alt="No Image">
+                            <% } %>
+                            <div class="card-glare"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3><%= actor.name %></h3>
+                            <p><strong><%= actor.character %></strong></p>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+
+    <!-- Recommendations -->
+    <section>
+        <h2>❤️ Recommended Movies</h2>
+        <div class="movie-container">
+            <% recommendations.forEach(movie => { %>
+                <div class="movie-card" onclick="window.location.href='/movie/<%= movie.id %>'">
+                    <div class="movie-card-inner">
+                        <div class="movie-card-poster">
+                            <% if(movie.poster_path){ %>
+                                <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+                            <% } else { %>
+                                <img src="https://via.placeholder.com/500x750?text=No+Image">
+                            <% } %>
+                            <div class="card-glare"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3><%= movie.title %></h3>
+                            <p>⭐ <%= movie.vote_average.toFixed(1) %></p>
+                            <a href="/movie/<%= movie.id %>" class="details-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

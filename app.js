@@ -1,0 +1,240 @@
+import express from "express";
+import axios from "axios";
+
+const app = express();
+const PORT = 3000;
+
+const API_KEY = "f55138b314804ceeef90d501e533a3c1";
+const BASE_URL = "https://api.themoviedb.org/3";
+
+app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+
+// ==========================
+// HOME PAGE
+// Trending Movies
+// ==========================
+app.get("/", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/trending/movie/day`, {
+            params: { api_key: API_KEY, page }
+        });
+        res.render("index", {
+            movies: response.data.results,
+            page: response.data.page,
+            totalPages: response.data.total_pages,
+            endpoint: "/"
+        });
+    } catch (err) {
+        console.log(err.message);
+        res.render("index", { movies: [], page: 1, totalPages: 1, endpoint: "/" });
+    }
+});
+
+
+// ==========================
+// SEARCH MOVIES
+// ==========================
+app.get("/search", async (req, res) => {
+    try {
+        const query = req.query.query;
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/search/movie`, {
+            params: { api_key: API_KEY, query, page }
+        });
+        res.render("search", {
+            movies: response.data.results,
+            query,
+            page: response.data.page,
+            totalPages: response.data.total_pages
+        });
+    } catch (err) {
+        console.log(err.message);
+        res.render("search", { movies: [], query: "", page: 1, totalPages: 1 });
+    }
+});
+
+// ==========================
+// MOVIE DETAILS
+// ==========================
+app.get("/movie/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const [movie, credits, videos, recommendations] = await Promise.all([
+            axios.get(`${BASE_URL}/movie/${id}`, { params: { api_key: API_KEY } }),
+            axios.get(`${BASE_URL}/movie/${id}/credits`, { params: { api_key: API_KEY } }),
+            axios.get(`${BASE_URL}/movie/${id}/videos`, { params: { api_key: API_KEY } }),
+            axios.get(`${BASE_URL}/movie/${id}/recommendations`, { params: { api_key: API_KEY } })
+        ]);
+
+        const trailer = videos.data.results.find(
+            video => video.site === "YouTube" && video.type === "Trailer"
+        );
+
+        res.render("movie", {
+            movie: movie.data,
+            cast: credits.data.cast.slice(0, 10),
+            trailer,
+            recommendations: recommendations.data.results
+        });
+    } catch (err) {
+        console.log(err.message);
+        res.render("error");
+    }
+});
+
+
+// ==========================
+// POPULAR MOVIES
+// ==========================
+app.get("/popular", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/movie/popular`, {
+            params: { api_key: API_KEY, page }
+        });
+        res.render("category", {
+            title: "Popular Movies",
+            movies: response.data.results,
+            page: response.data.page,
+            totalPages: response.data.total_pages,
+            endpoint: "/popular"
+        });
+    } catch (err) {
+        res.render("error");
+    }
+});
+
+
+
+// ==========================
+// TOP RATED
+// ==========================
+app.get("/top-rated", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/movie/top_rated`, {
+            params: { api_key: API_KEY, page }
+        });
+        res.render("category", {
+            title: "Top Rated Movies",
+            movies: response.data.results,
+            page: response.data.page,
+            totalPages: response.data.total_pages,
+            endpoint: "/top-rated"
+        });
+    } catch {
+        res.render("error");
+    }
+});
+
+
+// ==========================
+// UPCOMING
+// ==========================
+app.get("/upcoming", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/movie/upcoming`, {
+            params: { api_key: API_KEY, page }
+        });
+        res.render("category", {
+            title: "Upcoming Movies",
+            movies: response.data.results,
+            page: response.data.page,
+            totalPages: response.data.total_pages,
+            endpoint: "/upcoming"
+        });
+    } catch {
+        res.render("error");
+    }
+});
+
+
+// ==========================
+// TRENDING
+// ==========================
+app.get("/trending", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const response = await axios.get(`${BASE_URL}/trending/movie/week`, {
+            params: { api_key: API_KEY, page }
+        });
+        res.render("category", {
+            title: "Trending Movies",
+            movies: response.data.results,
+            page: response.data.page,
+            totalPages: response.data.total_pages,
+            endpoint: "/trending"
+        });
+    } catch {
+        res.render("error");
+    }
+});
+
+// ==========================
+// CATEGORIES (GENRES)
+// ==========================
+app.get("/categories", async (req, res) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/genre/movie/list`, {
+            params: { api_key: API_KEY }
+        });
+        res.render("categories", {
+            genres: response.data.genres
+        });
+    } catch {
+        res.render("error");
+    }
+});
+
+
+// ==========================
+// GENRE
+// ==========================
+app.get("/genre/:id", async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        
+        const [movieRes, genreRes] = await Promise.all([
+            axios.get(`${BASE_URL}/discover/movie`, {
+                params: { api_key: API_KEY, with_genres: req.params.id, page }
+            }),
+            axios.get(`${BASE_URL}/genre/movie/list`, {
+                params: { api_key: API_KEY }
+            })
+        ]);
+        
+        const genres = genreRes.data.genres;
+        const currentGenre = genres.find(g => g.id.toString() === req.params.id);
+        const genreName = currentGenre ? currentGenre.name : "Category";
+
+        res.render("category", {
+            title: `${genreName} Movies`,
+            movies: movieRes.data.results,
+            page: movieRes.data.page,
+            totalPages: movieRes.data.total_pages,
+            endpoint: `/genre/${req.params.id}`
+        });
+    } catch {
+        res.render("error");
+    }
+});
+
+
+// ==========================
+// ERROR PAGE
+// ==========================
+app.use((req, res) => {
+    res.status(404).render("error");
+});
+
+
+// ==========================
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<header>
+    <h1>🎬 <span>Cinematic</span></h1>
+    <form action="/search" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Search Movies..." value="<%= query %>" required>
+        <button type="submit">Search</button>
+    </form>
+</header>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/popular">Popular</a>
+    <a href="/top-rated">Top Rated</a>
+    <a href="/upcoming">Upcoming</a>
+    <a href="/categories">Categories</a>
+</nav>
+
+<main>
+    <h2>Search Results for "<%= query %>"</h2>
+    <% if(movies.length === 0){ %>
+        <h3>No movies found.</h3>
+    <% } else { %>
+        <div class="movie-container">
+            <% movies.forEach(movie => { %>
+                <div class="movie-card" onclick="window.location.href='/movie/<%= movie.id %>'">
+                    <div class="movie-card-inner">
+                        <div class="movie-card-poster">
+                            <% if(movie.poster_path){ %>
+                                <img src="https://image.tmdb.org/t/p/w500<%= movie.poster_path %>" alt="<%= movie.title %>">
+                            <% } else { %>
+                                <img src="https://via.placeholder.com/500x750?text=No+Image" alt="No Image">
+                            <% } %>
+                            <div class="card-glare"></div>
+                        </div>
+                        <div class="movie-info">
+                            <h3><%= movie.title %></h3>
+                            <p>⭐ <%= movie.vote_average.toFixed(1) %></p>
+                            <p>📅 <%= movie.release_date || "N/A" %></p>
+                            <a href="/movie/<%= movie.id %>" class="details-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } %>
+
+    <!-- Pagination -->
+    <% if(totalPages > 1){ %>
+    <div class="pagination">
+        <% if(page > 1){ %>
+            <a href="/search?query=<%= query %>&page=<%= page - 1 %>">← Previous</a>
+        <% } %>
+        <span>Page <%= page %> of <%= totalPages %></span>
+        <% if(page < totalPages){ %>
+            <a href="/search?query=<%= query %>&page=<%= page + 1 %>">Next →</a>
+        <% } %>
+    </div>
+    <% } %>
+</main>
+
+<footer>
+    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>

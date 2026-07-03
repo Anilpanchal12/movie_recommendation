@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .error-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            perspective: 1000px;
+        }
+        .error-card {
+            background: rgba(15, 15, 22, 0.6);
+            border: 1px solid var(--glass-border);
+            padding: 60px 40px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            transform-style: preserve-3d;
+            animation: errorFloat 4s ease-in-out infinite alternate;
+        }
+        @keyframes errorFloat {
+            0% { transform: translateY(0) rotateX(2deg); }
+            100% { transform: translateY(-15px) rotateX(-2deg); }
+        }
+        .error-card h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            transform: translateZ(30px);
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .error-card h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            transform: translateZ(20px);
+        }
+        .error-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            transform: translateZ(10px);
+        }
+        .home-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+            color: #fff;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+            transform: translateZ(20px);
+            box-shadow: 0 10px 30px rgba(127, 0, 255, 0.3);
+        }
+        .home-btn:hover {
+            transform: translateZ(30px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 210, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<header>
+    <h1>🎬 <span>Cinematic</span></h1>
+    <form action="/search" method="GET" class="search-form">
+        <input type="text" name="query" placeholder="Search Movies..." required>
+        <button type="submit">Search</button>
+    </form>
+</header>
+
+<main>
+    <div class="error-container">
+        <div class="error-card">
+            <h1>😢 Oops!</h1>
+            <h2>Something went wrong.</h2>
+            <p>We couldn't process your request.</p>
+            <p>The movie may not exist, the page was not found, or there was a problem connecting to the server.</p>
+            <a href="/" class="home-btn">🏠 Back to Home</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+</footer>
+
+<script src="/script.js"></script>
+</body>
+</html>
