@@ -61,7 +61,7 @@ app.get("/search", async (req, res) => {
 // ==========================
 // SEARCH AUTOCOMPLETE API
 // ==========================
-app.get("/api/autocomplete", async (req, res) => {
+app.get("/search", async (req, res) => {
     try {
         const query = req.query.q;
         if (!query) {

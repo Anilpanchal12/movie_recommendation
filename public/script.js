@@ -50,46 +50,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- 3. Scroll-Triggered 3D Reveal ---
-    // Extracting this from the inline scripts in the EJS files
+    // --- 3. 3D Gallery Scroll Effect ---
     const cards = document.querySelectorAll('.movie-card');
     
-    const observerOptions = {
-        root: null,
-        rootMargin: '50px 0px -50px 0px', // Trigger slightly before it comes fully in
-        threshold: 0.1 
-    };
+    function update3DScroll() {
+        const windowHeight = window.innerHeight;
+        const windowCenter = windowHeight / 2;
 
-    const scrollObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('scroll-visible');
-                entry.target.classList.remove('scroll-hidden');
+        cards.forEach((card) => {
+            const rect = card.getBoundingClientRect();
+            const cardCenter = rect.top + (rect.height / 2);
+            
+            const distanceFromCenter = (cardCenter - windowCenter) / windowCenter;
+            const clampedDistance = Math.max(-1.5, Math.min(1.5, distanceFromCenter));
+            
+            // 3D Gallery Math
+            const rotateX = clampedDistance * -45; // Tilt
+            const translateZ = Math.abs(clampedDistance) * -400; // Push back deeply
+            const scale = 1 - (Math.abs(clampedDistance) * 0.15);
+            
+            card.style.setProperty('--scroll-rot-x', `${rotateX}deg`);
+            card.style.setProperty('--scroll-z', `${translateZ}px`);
+            card.style.setProperty('--scroll-scale', scale);
+            
+            if (Math.abs(clampedDistance) > 1.2) {
+                card.style.opacity = 0;
             } else {
-                // Re-hide when scrolling out for continuous effect
-                const rect = entry.target.getBoundingClientRect();
-                // Only hide if scrolling down past it or scrolling up above it
-                if(rect.top > window.innerHeight || rect.bottom < 0) {
-                    entry.target.classList.remove('scroll-visible');
-                    entry.target.classList.add('scroll-hidden');
-                }
+                card.style.opacity = 1 - (Math.abs(clampedDistance) * 0.3);
             }
         });
-    }, observerOptions);
-
-    cards.forEach((card, index) => {
-        card.classList.add('scroll-hidden');
-        // Add a slight staggered transition delay based on index (modulo for rows)
-        const delay = (index % 4) * 0.1;
-        card.style.transitionDelay = `${delay}s, 0s`; // delay transform, no delay for box-shadow
-        scrollObserver.observe(card);
-    });
+        
+        requestAnimationFrame(update3DScroll);
+    }
+    
+    update3DScroll();
 
 
     // --- 4. Advanced 3D Mouse Hover & Glare Engine ---
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
-            // Remove delay during hover interaction for immediate response
             card.style.transitionDelay = '0s, 0s';
             
             const rect = card.getBoundingClientRect();
@@ -103,29 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            // Premium cinematic tilt (higher angle for dramatic effect)
             const maxTilt = 22; 
             const rotateX = ((y - centerY) / centerY) * -maxTilt; 
             const rotateY = ((x - centerX) / centerX) * maxTilt;
 
-            card.style.setProperty('--rot-x', `${rotateX}deg`);
-            card.style.setProperty('--rot-y', `${rotateY}deg`);
+            card.style.setProperty('--hover-rot-x', `${rotateX}deg`);
+            card.style.setProperty('--hover-rot-y', `${rotateY}deg`);
             card.style.setProperty('--mouse-x', `${xPercent}%`);
             card.style.setProperty('--mouse-y', `${yPercent}%`);
             
-            // Add scale up
-            card.style.setProperty('--scale', `1.08`);
-            card.style.setProperty('--z', `40px`);
+            card.style.setProperty('--hover-scale', `1.15`);
+            card.style.setProperty('--hover-z', `80px`);
         });
 
         card.addEventListener('mouseleave', () => {
-            // Revert properties smoothly
-            card.style.setProperty('--rot-x', `0deg`);
-            card.style.setProperty('--rot-y', `0deg`);
+            card.style.setProperty('--hover-rot-x', `0deg`);
+            card.style.setProperty('--hover-rot-y', `0deg`);
             card.style.setProperty('--mouse-x', `50%`);
             card.style.setProperty('--mouse-y', `50%`);
-            card.style.setProperty('--scale', `1`);
-            card.style.setProperty('--z', `0px`);
+            card.style.setProperty('--hover-scale', `1`);
+            card.style.setProperty('--hover-z', `0px`);
         });
     });
 
@@ -134,11 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if(window.scrollY > 50) {
-            header.style.background = 'rgba(2, 2, 4, 0.85)';
-            header.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.8)';
+            header.style.background = 'var(--bg-deep)';
+            header.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.9)';
             header.style.transform = 'translateZ(20px)';
         } else {
-            header.style.background = 'rgba(5, 5, 8, 0.65)';
+            header.style.background = 'var(--bg-deep)';
             header.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.6)';
             header.style.transform = 'translateZ(0px)';
         }
@@ -156,25 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
         width: '50px',
         height: '50px',
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, var(--primary), var(--accent-dark))',
+        background: 'var(--primary)',
         color: '#fff',
         border: 'none',
         fontSize: '1.5rem',
         cursor: 'pointer',
         display: 'none',
         zIndex: '1000',
-        boxShadow: '0 10px 30px rgba(255, 0, 51, 0.4)',
+        boxShadow: '0 10px 30px rgba(228, 47, 69, 0.4)',
         transition: 'all 0.3s ease',
         transformStyle: 'preserve-3d'
     });
 
     topBtn.addEventListener('mouseenter', () => {
         topBtn.style.transform = 'translateY(-5px) translateZ(10px)';
-        topBtn.style.boxShadow = '0 15px 40px rgba(255, 0, 51, 0.6)';
+        topBtn.style.boxShadow = '0 15px 40px rgba(228, 47, 69, 0.6)';
     });
     topBtn.addEventListener('mouseleave', () => {
         topBtn.style.transform = 'translateY(0) translateZ(0)';
-        topBtn.style.boxShadow = '0 10px 30px rgba(255, 0, 51, 0.4)';
+        topBtn.style.boxShadow = '0 10px 30px rgba(228, 47, 69, 0.4)';
     });
 
     document.body.appendChild(topBtn);
