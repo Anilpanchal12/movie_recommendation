@@ -367,28 +367,39 @@ main h2::after {
 }
 
 .movie-card-inner {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-md);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
   transform-style: preserve-3d;
-  box-shadow: var(--shadow-base);
-  transition: var(--transition-cinematic);
-  background: var(--card-bg);
 }
 
 .movie-card:hover .movie-card-inner {
-  box-shadow: var(--shadow-float);
+  transform: rotateY(180deg);
+  transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* Card Poster Layer */
-.movie-card-poster {
+/* Shared Flip Card Sides */
+.movie-card-poster, .movie-info {
+  box-shadow: var(--shadow-base);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
   height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid var(--primary);
   border-radius: var(--radius-md);
+  top: 0;
+  left: 0;
   overflow: hidden;
-  position: relative;
-  transform-style: preserve-3d;
-  /* border: 1px solid var(--glass-border); */
+}
+
+/* Card Poster Layer (Front) */
+.movie-card-poster {
   background: var(--card-bg);
 }
 
@@ -396,62 +407,33 @@ main h2::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-cinematic), filter var(--transition-cinematic);
-  transform: translateZ(1px);
-  /* Prevent z-fighting */
 }
 
-.movie-card:hover img {
-  transform: scale(1.08) translateZ(1px);
-  filter: brightness(0.5) saturate(1.1);
-}
-
-/* Dynamic Glare/Lighting Layer */
+/* Dynamic Glare/Lighting Layer - Optional for front */
 .card-glare {
   position: absolute;
   inset: 0;
   border-radius: var(--radius-md);
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(255, 255, 255, 0.15),
-      transparent 100%);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15), transparent 100%);
   z-index: 5;
   opacity: 0;
   transition: opacity 0.4s;
   pointer-events: none;
   mix-blend-mode: overlay;
-  transform: translateZ(2px);
 }
 
 .movie-card:hover .card-glare {
   opacity: 1;
 }
 
-/* Info Panel (Floats in 3D) */
+/* Info Panel (Back of Flip Card) */
 .movie-info {
-  position: absolute;
-  inset: auto 0 0 0;
-  /* Bottom anchored */
-  height: 60%;
+  background: linear-gradient(120deg, var(--bg-mid) 30%, var(--primary) 88%, var(--bg-deep) 40%, var(--accent-dark) 78%);
+  color: var(--text-primary);
+  transform: rotateY(180deg);
   padding: 24px 20px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background:
-    linear-gradient(to top, rgba(5, 5, 5, 1) 0%, rgba(5, 5, 5, 0.162) 100%, transparent 100%);
-  backdrop-filter: blur(8px) saturate(1.2);
-  border-top: 2px solid var(--primary);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  opacity: 0;
-  transform: translateY(20px) translateZ(10px);
-  transition: all var(--transition-cinematic);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.movie-card:hover .movie-info {
-  opacity: 1;
-  transform: translateY(0) translateZ(40px);
-  pointer-events: auto;
+  align-items: center;
+  text-align: center;
 }
 
 .movie-info h3 {
@@ -486,7 +468,7 @@ main h2::after {
 
 .details-btn {
   margin-top: auto;
-  align-self: flex-start;
+  align-self: center;
   padding: 8px 20px;
   background: #1f1f1f;
   color: #fff;
