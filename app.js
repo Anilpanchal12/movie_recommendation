@@ -59,6 +59,33 @@ app.get("/search", async (req, res) => {
 });
 
 // ==========================
+// SEARCH AUTOCOMPLETE API
+// ==========================
+app.get("/api/autocomplete", async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.json([]);
+        }
+        const response = await axios.get(`${BASE_URL}/search/movie`, {
+            params: { api_key: API_KEY, query, page: 1 }
+        });
+        
+        // Return only the top 5 results to keep the payload light
+        const results = response.data.results.slice(0, 5).map(movie => ({
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            release_date: movie.release_date ? movie.release_date.split('-')[0] : ''
+        }));
+        
+        res.json(results);
+    } catch (err) {
+        res.json([]);
+    }
+});
+
+// ==========================
 // MOVIE DETAILS
 // ==========================
 app.get("/movie/:id", async (req, res) => {

@@ -195,4 +195,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- 7. Search Autocomplete ---
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) {
+        const searchInput = searchForm.querySelector('input[name="query"]');
+        searchInput.setAttribute('autocomplete', 'off');
+
+        // Create dropdown container
+        const dropdown = document.createElement('div');
+        dropdown.className = 'autocomplete-dropdown';
+        searchForm.appendChild(dropdown);
+
+        let debounceTimeout = null;
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            clearTimeout(debounceTimeout);
+
+            if (query.length < 2) {
+                dropdown.classList.remove('active');
+                dropdown.innerHTML = '';
+                return;
+            }
+
+            debounceTimeout = setTimeout(async () => {
+                try {
+                    const res = await fetch(`/api/autocomplete?q=${encodeURIComponent(query)}`);
+                    const data = await res.json();
+
+                    if (data.length > 0) {
+                        dropdown.innerHTML = data.map(movie => `
+                            <a href="/movie/${movie.id}" class="autocomplete-item">
+                                <img src="${movie.poster_path ? `https://image.tmdb.org/t/p/w92${movie.poster_path}` : 'https://via.placeholder.com/92x138?text=No+Img'}" alt="${movie.title}">
+                                <div class="autocomplete-item-info">
+                                    <span class="autocomplete-item-title">${movie.title}</span>
+                                    <span class="autocomplete-item-year">${movie.release_date}</span>
+                                </div>
+                            </a>
+                        `).join('');
+                        dropdown.classList.add('active');
+                    } else {
+                        dropdown.classList.remove('active');
+                        dropdown.innerHTML = '';
+                    }
+                } catch (err) {
+                    console.error("Autocomplete error:", err);
+                }
+            }, 300); // 300ms debounce
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchForm.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        
+        // Re-open if clicking back on input with value
+        searchInput.addEventListener('focus', () => {
+            if (dropdown.children.length > 0) {
+                dropdown.classList.add('active');
+            }
+        });
+    }
+
 });
