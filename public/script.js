@@ -111,8 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.setProperty('--mouse-x', `${xPercent}%`);
             card.style.setProperty('--mouse-y', `${yPercent}%`);
             
-            card.style.setProperty('--hover-scale', `1.15`);
-            card.style.setProperty('--hover-z', `80px`);
+            card.style.setProperty('--hover-z', `40px`);
         });
 
         card.addEventListener('mouseleave', () => {
@@ -120,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.setProperty('--hover-rot-y', `0deg`);
             card.style.setProperty('--mouse-x', `50%`);
             card.style.setProperty('--mouse-y', `50%`);
-            card.style.setProperty('--hover-scale', `1`);
             card.style.setProperty('--hover-z', `0px`);
         });
     });

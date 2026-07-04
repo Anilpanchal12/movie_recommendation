@@ -59,8 +59,13 @@
 
 <div class="bg-mesh"></div>
 
+<div id="sidebar-overlay"></div>
+
 <header>
-    <h1>🎬 <span>Cinematic</span></h1>
+    <div class="brand-container">
+        <button id="menuBtn" class="menu-btn" aria-label="Open Menu">☰</button>
+        <h1>🎬 <span>Cinematic</span></h1>
+    </div>
     <form action="/search" method="GET" class="search-form">
         <input type="text" name="query" placeholder="Search Movies..." required>
         <button type="submit">Search</button>
