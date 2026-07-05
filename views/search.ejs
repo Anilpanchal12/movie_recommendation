@@ -13,7 +13,11 @@
 <header>
     <h1>🎬 <span>Cinematic</span></h1>
     <form action="/search" method="GET" class="search-form">
-        <input type="text" name="query" placeholder="Search Movies..." value="<%= query %>" required>
+        <select name="type" class="search-type">
+            <option value="movie" <%= typeof type !== 'undefined' && type === 'cast' ? '' : 'selected' %>>Movie</option>
+            <option value="cast" <%= typeof type !== 'undefined' && type === 'cast' ? 'selected' : '' %>>Cast</option>
+        </select>
+        <input type="text" name="query" placeholder="Search..." value="<%= query %>" required>
         <button type="submit">Search</button>
     </form>
 </header>
@@ -59,11 +63,11 @@
     <% if(totalPages > 1){ %>
     <div class="pagination">
         <% if(page > 1){ %>
-            <a href="/search?query=<%= query %>&page=<%= page - 1 %>">← Previous</a>
+            <a href="/search?query=<%= query %>&type=<%= typeof type !== 'undefined' ? type : 'movie' %>&page=<%= page - 1 %>">← Previous</a>
         <% } %>
         <span>Page <%= page %> of <%= totalPages %></span>
         <% if(page < totalPages){ %>
-            <a href="/search?query=<%= query %>&page=<%= page + 1 %>">Next →</a>
+            <a href="/search?query=<%= query %>&type=<%= typeof type !== 'undefined' ? type : 'movie' %>&page=<%= page + 1 %>">Next →</a>
         <% } %>
     </div>
     <% } %>

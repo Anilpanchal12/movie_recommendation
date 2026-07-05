@@ -42,26 +42,49 @@ app.get("/", async (req, res) => {
 app.get("/search", async (req, res) => {
     try {
         const query = req.query.query;
+        const type = req.query.type || 'movie';
         const page = req.query.page || 1;
-        const response = await axios.get(`${BASE_URL}/search/movie`, {
-            params: { api_key: API_KEY, query, page }
-        });
+        
+        let movies = [];
+        let totalPages = 1;
+
+        if (type === 'cast') {
+            const personRes = await axios.get(`${BASE_URL}/search/person`, {
+                params: { api_key: API_KEY, query, page: 1 }
+            });
+            if (personRes.data.results.length > 0) {
+                const personId = personRes.data.results[0].id;
+                const movieRes = await axios.get(`${BASE_URL}/discover/movie`, {
+                    params: { api_key: API_KEY, with_cast: personId, page }
+                });
+                movies = movieRes.data.results;
+                totalPages = movieRes.data.total_pages;
+            }
+        } else {
+            const response = await axios.get(`${BASE_URL}/search/movie`, {
+                params: { api_key: API_KEY, query, page }
+            });
+            movies = response.data.results;
+            totalPages = response.data.total_pages;
+        }
+
         res.render("search", {
-            movies: response.data.results,
+            movies: movies,
             query,
-            page: response.data.page,
-            totalPages: response.data.total_pages
+            type,
+            page: type === 'cast' ? page : (req.query.page || 1),
+            totalPages: totalPages
         });
     } catch (err) {
         console.log(err.message);
-        res.render("search", { movies: [], query: "", page: 1, totalPages: 1 });
+        res.render("search", { movies: [], query: "", type: "movie", page: 1, totalPages: 1 });
     }
 });
 
 // ==========================
 // SEARCH AUTOCOMPLETE API
 // ==========================
-app.get("/search", async (req, res) => {
+app.get("/api/autocomplete", async (req, res) => {
     try {
         const query = req.query.q;
         if (!query) {
