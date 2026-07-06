@@ -76,7 +76,7 @@ Want to just run the app locally and start browsing movies? Here's all you need.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/cinescope.git
+git clone https://github.com/Anilpanchal12/movie_recommendation.git
 cd cinescope
 
 # 2. Install dependencies
