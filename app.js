@@ -5,7 +5,7 @@ import env from "dotenv";
 const app = express();
 const PORT = 3000;
 
-const API_KEY =  process.env.API_KEY;
+const API_KEY = "f55138b314804ceeef90d501e533a3c1";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 app.set("view engine", "ejs");
