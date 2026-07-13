@@ -1,40 +1,41 @@
 /* ===============================
    Premium 3D Cinematic Movie System
+   White / Red / Black Edition
    =============================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   /* Backgrounds */
-  --bg-deep: #1A1616;
-  --bg-mid: #403939;
+  --bg-deep: #FFFFFF;
+  --bg-mid: #F4F0F0;
 
   /* Surfaces */
-  --surface-base: #2A2424;
-  --surface-glass: rgba(255, 255, 255, 0.05);
-  --surface-hover: #4A4242;
-  --card-bg: #2F2929;
+  --surface-base: #FFFFFF;
+  --surface-glass: rgba(0, 0, 0, 0.03);
+  --surface-hover: #F6E9EB;
+  --card-bg: #FFFFFF;
 
   /* Brand Colors */
   --primary: #D91A3A;
-  --primary-hover: #801426;
-  --accent-dark: #801426;
+  --primary-hover: #A3132C;
+  --accent-dark: #14100F;
   --accent-light: #FCDF4C;
 
   /* Glow Effects */
-  --accent-glow-primary: rgba(217, 26, 58, 0.28);
-  --accent-glow-dark: rgba(128, 20, 38, 0.25);
+  --accent-glow-primary: rgba(217, 26, 58, 0.22);
+  --accent-glow-dark: rgba(20, 16, 15, 0.15);
   --accent-glow-light: rgba(252, 223, 76, 0.25);
 
   /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #E2E2E2;
-  --text-muted: #B5ACAC;
+  --text-primary: #14100F;
+  --text-secondary: #3A3232;
+  --text-muted: #7A7070;
 
   /* Shadows */
-  --shadow-base: 0 10px 25px rgba(0, 0, 0, 0.35);
-  --shadow-float: 0 20px 45px rgba(0, 0, 0, 0.5),
-                  0 8px 30px rgba(217, 26, 58, 0.18);
+  --shadow-base: 0 10px 25px rgba(20, 16, 15, 0.12);
+  --shadow-float: 0 20px 45px rgba(20, 16, 15, 0.16),
+                  0 8px 30px rgba(217, 26, 58, 0.14);
   --shadow-glow: 0 0 30px var(--accent-glow-primary);
 
   /* Border Radius */
@@ -47,8 +48,8 @@
   --transition-fast: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   /* Borders */
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(20, 16, 15, 0.1);
+  --glass-highlight: rgba(20, 16, 15, 0.14);
 
   /* 3D Scroll */
   --scroll-3d-rot: 25deg;
@@ -135,7 +136,7 @@ header {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 40px rgba(20, 16, 15, 0.08);
   transform-style: preserve-3d;
   transition: transform var(--transition-fast);
 }
@@ -143,7 +144,7 @@ header {
 header h1 {
   font-size: 1.8rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--text-primary), #f40612, var(--primary));
+  background: linear-gradient(135deg, var(--accent-dark), var(--primary), var(--accent-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
@@ -191,14 +192,14 @@ header h1 {
   font-size: 1rem;
   font-family: "Inter", sans-serif;
   transition: var(--transition-cinematic);
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 2px 5px rgba(20, 16, 15, 0.04);
 }
 
 .search-form input:focus {
   outline: none;
   border-color: var(--primary);
   background: var(--surface-base);
-  box-shadow: 0 0 25px rgba(229, 9, 20, 0.1), inset 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 25px rgba(217, 26, 58, 0.12), inset 0 2px 5px rgba(20, 16, 15, 0.04);
   /* transform: translateZ(10px); */
 }
 
@@ -218,13 +219,13 @@ header h1 {
   font-family: "Outfit", sans-serif;
   cursor: pointer;
   transition: var(--transition-fast);
-  box-shadow: 0 4px 15px rgba(178, 7, 16, 0.3);
+  box-shadow: 0 4px 15px rgba(217, 26, 58, 0.25);
   z-index: 100;
 }
 
 .search-form button:hover {
   transform: scale(1.05) translateZ(5px);
-  /* box-shadow: 0 8px 25px rgba(229, 9, 20, 0.5); */
+  /* box-shadow: 0 8px 25px rgba(217, 26, 58, 0.5); */
   filter: brightness(1.1);
 }
 
@@ -237,7 +238,7 @@ header h1 {
   background: var(--surface-base);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 15px 35px rgba(20, 16, 15, 0.18);
   z-index: 200;
   overflow: hidden;
   display: none;
@@ -255,7 +256,7 @@ header h1 {
   gap: 12px;
   padding: 12px;
   color: var(--text-primary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(20, 16, 15, 0.06);
   transition: var(--transition-fast);
   cursor: pointer;
   text-decoration: none;
@@ -312,15 +313,15 @@ nav a {
   border: 1px solid var(--glass-border);
   transition: var(--transition-fast);
   transform-style: preserve-3d;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(20, 16, 15, 0.04);
 }
 
 nav a:hover {
-  color: var(--text-primary);
-  background: var(--surface-hover);
-  border-color: var(--primary);
+  color: #fff;
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
   transform: translateY(-4px) translateZ(15px);
-  box-shadow: 0 10px 25px rgba(229, 9, 20, 0.15);
+  box-shadow: 0 10px 25px rgba(217, 26, 58, 0.22);
 }
 
 /* --- MAIN & CINEMATIC 3D GRID --- */
@@ -337,7 +338,7 @@ main h2 {
   color: var(--text-primary);
   text-transform: capitalize;
   letter-spacing: -0.5px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  text-shadow: none;
   position: relative;
   display: inline-block;
 }
@@ -442,6 +443,7 @@ main h2::after {
 /* Card Poster Layer (Front) */
 .movie-card-poster {
   background: var(--card-bg);
+  border: 1px solid var(--glass-border);
 }
 
 .movie-card img {
@@ -455,7 +457,7 @@ main h2::after {
   position: absolute;
   inset: 0;
   border-radius: var(--radius-md);
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15), transparent 100%);
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.35), transparent 100%);
   z-index: 5;
   opacity: 0;
   transition: opacity 0.4s;
@@ -469,8 +471,8 @@ main h2::after {
 
 /* Info Panel (Back of Flip Card) */
 .movie-info {
-  background: linear-gradient(120deg, var(--bg-mid) 30%, var(--surface-glass) 88%, var(--bg-deep) 40%, #FFE5E8 78%);
-  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--accent-dark) 0%, #2A201F 55%, var(--primary) 130%);
+  color: #FFFFFF;
   transform: rotateY(180deg);
   padding: 24px 20px 20px;
   align-items: center;
@@ -482,13 +484,13 @@ main h2::after {
   font-weight: 700;
   margin-bottom: 6px;
   line-height: 1.3;
-  color: var(--text-primary);
+  color: #FFFFFF;
   text-shadow: none;
   transform: translateZ(15px);
 }
 
 .movie-info p {
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 0.9rem;
   margin: 4px 0;
   font-weight: 500;
@@ -497,7 +499,7 @@ main h2::after {
 
 .movie-info .overview-text {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.65);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -511,13 +513,13 @@ main h2::after {
   margin-top: auto;
   align-self: center;
   padding: 8px 20px;
-  background: var(--surface-hover);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
   font-size: 0.85rem;
   font-weight: 600;
   font-family: "Outfit", sans-serif;
   border-radius: 999px;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   transition: var(--transition-fast);
   transform: translateZ(20px);
   text-transform: uppercase;
@@ -529,7 +531,7 @@ main h2::after {
   border-color: var(--primary);
   color: #fff;
   transform: translateZ(30px) scale(1.05);
-  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+  box-shadow: 0 4px 15px rgba(217, 26, 58, 0.45);
 }
 
 /* --- 3D SCROLL REVEAL (JS Handled Classes) --- */
@@ -604,7 +606,7 @@ main h2::after {
   font-size: 3rem;
   line-height: 1.1;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-muted) 100%);
+  background: linear-gradient(135deg, var(--accent-dark) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   transform: translateZ(20px);
@@ -628,12 +630,13 @@ main h2::after {
   display: flex;
   align-items: center;
   gap: 6px;
+  color: var(--text-secondary);
 }
 
 .tag-highlight {
   color: var(--primary);
-  border-color: rgba(229, 9, 20, 0.4);
-  background: rgba(229, 9, 20, 0.1);
+  border-color: rgba(217, 26, 58, 0.35);
+  background: rgba(217, 26, 58, 0.08);
 }
 
 .details h3 {
@@ -674,7 +677,7 @@ section h2 {
 .cast-card .movie-info {
   height: auto;
   padding: 16px;
-  background: linear-gradient(to top, rgba(5, 5, 5, 1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(20, 16, 15, 0.95) 0%, rgba(20, 16, 15, 0.55) 65%, transparent 100%);
 }
 
 /* --- CINEMATIC TRAILER --- */
@@ -690,7 +693,7 @@ section h2 {
 
 .trailer-section iframe:hover {
   transform: translateY(-5px) translateZ(20px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(229, 9, 20, 0.15);
+  box-shadow: 0 30px 60px rgba(20, 16, 15, 0.2), 0 0 40px rgba(217, 26, 58, 0.15);
 }
 
 /* --- PAGINATION --- */
@@ -709,6 +712,7 @@ section h2 {
   padding: 12px 24px;
   border-radius: 999px;
   font-weight: 600;
+  color: var(--text-primary);
   transition: var(--transition-fast);
 }
 
@@ -717,7 +721,7 @@ section h2 {
   border-color: var(--primary);
   color: #fff;
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 10px 25px rgba(229, 9, 20, 0.4);
+  box-shadow: 0 10px 25px rgba(217, 26, 58, 0.35);
 }
 
 .pagination span {
@@ -732,7 +736,7 @@ footer {
   font-size: 0.9rem;
   color: var(--text-muted);
   border-top: 1px solid var(--glass-border);
-  background: var(--surface-base);
+  background: var(--bg-mid);
   position: relative;
   z-index: 10;
 }
@@ -880,7 +884,7 @@ footer {
 
   nav a {
     padding: 7px 14px;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
   }
 
   main {
@@ -957,7 +961,7 @@ footer {
   }
 
   .movie-card img {
-    filter: brightness(0.6) saturate(1.1) !important;
+    filter: saturate(1.05) !important;
   }
 
   /* Elegant bottom overlay for touch devices */
@@ -969,7 +973,7 @@ footer {
     min-height: 50%;
     top: auto !important;
     bottom: 0 !important;
-    background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.8) 55%, transparent 100%) !important;
+    background: linear-gradient(to top, rgba(20, 16, 15, 0.96) 0%, rgba(20, 16, 15, 0.85) 55%, transparent 100%) !important;
     padding: 40px 12px 16px !important;
     justify-content: flex-end !important;
   }
@@ -978,7 +982,7 @@ footer {
   .movie-info p,
   .movie-info .overview-text {
     transform: none !important;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   }
 
   .movie-info h3 {
